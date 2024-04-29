@@ -1,0 +1,25 @@
+services:
+  database:
+    image: mariadb:11.2
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: my_database
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: my_password
+    networks:
+      - backups
+    restart: unless-stopped
+  borgmatic:
+    image: ghcr.io/borgmatic-collective/borgmatic:1.8.10
+    volumes:
+      - ./database.yaml:/etc/borgmatic.d/database.yaml
+    environment:
+      MY_PASSWORD: my_password
+    networks:
+      - backups
+    restart: unless-stopped
+
+networks:
+  backups:

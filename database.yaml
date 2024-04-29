@@ -1,0 +1,22 @@
+constants:
+  mariadb_name: my_database
+  mariadb_host: database
+  mariadb_user: my_user
+  mariadb_pass: ${MY_PASSWORD}
+
+repositories:
+  - path: '/tmp/backup'
+    type: local
+
+mariadb_databases:
+  - name: "{mariadb_name}"
+    hostname: "{mariadb_host}"
+    username: "{mariadb_user}"
+    # passing the environment variable directly works just fine
+    # password: ${MY_PASSWORD}
+    password: "{mariadb_pass}"
+
+# Try commenting out this line without changing anything else, it works
+before_backup: []
+
+keep_daily: 7
